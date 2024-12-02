@@ -6,8 +6,12 @@ import { Trabajador, Solicitud } from './types/types';
 import TrabajadorForm from './TrabajadorForm';
 import MessageSubmited from './components/MessageSubmited';
 
-export const Form = () => {
-  let indexTrabajadores: number = 0;
+interface FormProps {
+  connectionUrl: string;
+}
+
+export const Form: React.FC<FormProps> = ({ connectionUrl }: FormProps) => {
+  const [indexTrabajadores, setIndexTrabajadores] = useState<number>(0);
   const [solicitud, setSolicitud] = useState<Solicitud>({
     correoLider: '', cargoLider: '', nombreLider: '', areaLider: '', fechaSolicitud: '', workers: []
   })
@@ -19,11 +23,11 @@ export const Form = () => {
   const [submited, setSubmited] = useState(false)
 
   const addWorker = () => {
+    setIndexTrabajadores(indexTrabajadores + 1);
     setTrabajadores([...trabajadores, {
       id: indexTrabajadores, nombre: '', cargo: '', concepto: '', area: '',
       fechaInicio: '', fechaFinal: '', horaInicio: '', horaFin: ''
     }])
-    indexTrabajadores += 1;
   }
 
   const deleteWorker = (_index: number) => {
@@ -68,35 +72,30 @@ export const Form = () => {
       ...solicitud,
       workers: trabajadores.map(trabajador => ({
         ...trabajador,
+        id: trabajador.id + 1,
         horaInicio: formatTimeTo12Hour(trabajador.horaInicio),
-        horaFin: formatTimeTo12Hour(trabajador.horaFin) || 'Pendiente'
+        horaFin: trabajador.horaFin ? formatTimeTo12Hour(trabajador.horaFin) : 'Pendiente'
       }))
     }
 
     console.log(solicitudFinal)
 
-    try {
-      const response = await fetch('https://prod-167.westus.logic.azure.com:443/workflows/0f18679311694f50ac511fe57d48c66d/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=vGargXJT6YvtobAmYOr-pmpLAcqlwYXC-Zj6090xHCc', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(solicitudFinal)
-      })
+    const response = await fetch(connectionUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(solicitudFinal)
+    })
 
-      console.log('Status de la respuesta:', response.status)
+    console.log('Status de la respuesta:', response)
 
-      if (response.ok || response.status === 202) {
-        const data = await response.json()
-        console.log('Respuesta exitosa:', data)
-        alert('Formulario enviado con éxito')
-      } else {
-        console.error('Error en la respuesta:', response.statusText)
-        alert('Error al enviar el formulario')
-      }
-    } catch (error) {
-      console.error('Error al enviar la solicitud:', error)
-      alert('Error al enviar el formulario')
+    if (response.ok || response.statusText == 'Accepted' || response.status === 202) {
+      const data = await response.json()
+      console.log('Respuesta exitosa:', data)
+      setSubmited(true);
+    } else {
+      console.error('Error en la respuesta:', response.statusText)
     }
   }
 
@@ -117,7 +116,7 @@ export const Form = () => {
               </button>
             </div>
             {
-              submited ? <MessageSubmited iniciarNuevaSolicitud={() => setSubmited(false)} /> :
+              submited ? <MessageSubmited iniciarNuevaSolicitud={iniciarNuevaSolicitud} /> :
                 (
                   <form className="p-6 space-y-8" onSubmit={handleSubmit}>
                     <div>
