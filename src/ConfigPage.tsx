@@ -31,8 +31,10 @@ const ConfigPage = () => {
   const generarEnlace = () => {
     try {
       if(url === "" || url === null) setError('Url no valida');
-      const link = `https://formulario-trabajo-extraordinario-zpp4.vercel.app/?connectionUrl=${url}`;
+      const encodedUrl = encodeURIComponent(url);
+      const link = `https://formulario-trabajo-extraordinario-zpp4.vercel.app/?connectionUrl=${encodedUrl}`;
       setGeneratedUrl(link);
+      console.log(link);
       setSubmitted(true);
       setUrl("");
       setError(null);
@@ -120,6 +122,8 @@ const ConfigPage = () => {
                   </button>
                   <a
                     href={generatedUrl}
+                    target="_blank"
+
                     className="px-6 py-3 bg-sky-700 text-white font-semibold rounded-lg hover:bg-green-600 transition-all duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-green-500"
                   >
                     Ir al formulario

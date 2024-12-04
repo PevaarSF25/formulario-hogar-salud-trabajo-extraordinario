@@ -9,12 +9,13 @@ const ProtectedForm: React.FC = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const connectionUrl = searchParams.get("connectionUrl");
+  const decodedUrl = connectionUrl ? decodeURIComponent(connectionUrl) : '';
 
-  if (!connectionUrl) {
+  if (!connectionUrl || decodedUrl == '') {
     return <Navigate to="/not-found" />;
   }
 
-  return <Form connectionUrl={connectionUrl} />;
+  return <Form connectionUrl={decodedUrl} />;
 };
 
 function App() {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Moon, Sun, Plus } from 'lucide-react'
 import './index.css';
 import pevaar from './assets/pevaar.svg';
@@ -21,6 +21,10 @@ export const Form: React.FC<FormProps> = ({ connectionUrl }: FormProps) => {
   }])
   const [darkMode, setDarkMode] = useState(false)
   const [submited, setSubmited] = useState(false)
+
+  useEffect(()=> {
+    console.log(connectionUrl);
+  },)
 
   const addWorker = () => {
     setIndexTrabajadores(indexTrabajadores + 1);
@@ -53,12 +57,14 @@ export const Form: React.FC<FormProps> = ({ connectionUrl }: FormProps) => {
   }
 
   const iniciarNuevaSolicitud = () => {
-    limpiarFormulario();
     setSubmited(false);
+    limpiarFormulario();
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+
+    console.log(connectionUrl);
 
     const formatTimeTo12Hour = (time: string) => {
       const [hour, minute] = time.split(':');
@@ -90,9 +96,8 @@ export const Form: React.FC<FormProps> = ({ connectionUrl }: FormProps) => {
 
     console.log('Status de la respuesta:', response)
 
-    if (response.ok || response.statusText == 'Accepted' || response.status === 202) {
-      const data = await response.json()
-      console.log('Respuesta exitosa:', data)
+    if (response.ok || response.statusText == 'Accepted' || response.status == 202) {
+      console.log('Respuesta exitosa')
       setSubmited(true);
     } else {
       console.error('Error en la respuesta:', response.statusText)
