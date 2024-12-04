@@ -1,20 +1,8 @@
 import { useEffect, useState } from "react";
-import base62 from 'base62';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { materialDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import pevaar from './assets/pevaar.svg';
 import { jsonEsquema}  from './assets/squema.ts';
-
-
-const isValidUrl = (url: string): boolean => {
-  try {
-    new URL(url);
-    return true;
-  } catch {
-    return false;
-  }
-};
-
 
 const ConfigPage = () => {
   const [url, setUrl] = useState<string>("");
