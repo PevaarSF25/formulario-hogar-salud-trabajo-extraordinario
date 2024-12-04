@@ -20,7 +20,7 @@ const ConfigPage = () => {
     try {
       if(url === "" || url === null) setError('Url no valida');
       const encodedUrl = encodeURIComponent(url);
-      const link = `https://formulario-trabajo-extraordinario-zpp4.vercel.app/?connectionUrl=${encodedUrl}`;
+      const link = `https://formulario-trabajo-extraordinario.vercel.app/?connectionUrl=${encodedUrl}`;
       setGeneratedUrl(link);
       console.log(link);
       setSubmitted(true);
