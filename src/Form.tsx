@@ -94,7 +94,7 @@ export const Form: React.FC<FormProps> = ({ connectionUrl }: FormProps) => {
       body: JSON.stringify(solicitudFinal)
     })
 
-    console.log('Status de la respuesta:', response)
+    console.log('Status de la respuesta...:', response)
 
     if (response.ok || response.statusText == 'Accepted' || response.status == 202) {
       console.log('Respuesta exitosa')
