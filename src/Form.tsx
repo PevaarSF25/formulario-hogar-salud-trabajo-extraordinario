@@ -57,12 +57,10 @@ export const Form: React.FC<FormProps> = ({ connectionUrl }: FormProps) => {
     })
   }
 
-  const navigate = useNavigate();
-
   const iniciarNuevaSolicitud = () => {
     setSubmited(false);
     limpiarFormulario();
-    navigate(0);
+    window.location.reload()
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
