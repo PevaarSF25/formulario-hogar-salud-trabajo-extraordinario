@@ -5,6 +5,7 @@ import pevaar from './assets/pevaar.svg';
 import { Trabajador, Solicitud } from './types/types';
 import TrabajadorForm from './TrabajadorForm';
 import MessageSubmited from './components/MessageSubmited';
+import { useNavigate } from 'react-router-dom';
 
 interface FormProps {
   connectionUrl: string;
@@ -56,9 +57,12 @@ export const Form: React.FC<FormProps> = ({ connectionUrl }: FormProps) => {
     })
   }
 
+  const navigate = useNavigate();
+
   const iniciarNuevaSolicitud = () => {
     setSubmited(false);
     limpiarFormulario();
+    navigate(0);
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
