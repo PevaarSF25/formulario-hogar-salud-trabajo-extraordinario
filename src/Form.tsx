@@ -5,7 +5,6 @@ import pevaar from './assets/pevaar.svg';
 import { Trabajador, Solicitud } from './types/types';
 import TrabajadorForm from './TrabajadorForm';
 import MessageSubmited from './components/MessageSubmited';
-import { useNavigate } from 'react-router-dom';
 
 interface FormProps {
   connectionUrl: string;
