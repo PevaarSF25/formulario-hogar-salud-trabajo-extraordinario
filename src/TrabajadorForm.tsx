@@ -6,9 +6,10 @@ interface Props {
   index: number;
   handleChange: (index: number, e: React.ChangeEvent<HTMLInputElement>) => void;
   deleteWorker: (_index: number) => void;
+  duplicateWorker: (pTrabajador: Trabajador) => void;
 }
 
-const TrabajadorForm: React.FC<Props> = ({ trabajador, index, handleChange, deleteWorker }) => {
+const TrabajadorForm: React.FC<Props> = ({ trabajador, index, handleChange, deleteWorker, duplicateWorker }) => {
   return (
     <div className="relative bg-gray-50 dark:bg-gray-700 p-6 rounded-lg shadow-md space-y-6 transition-colors duration-300">
       {
@@ -130,6 +131,11 @@ const TrabajadorForm: React.FC<Props> = ({ trabajador, index, handleChange, dele
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-600 text-gray-900 dark:text-white transition-colors duration-300"
           />
         </div>
+      <div className='d-flex align-items-start'>
+        <button onClick={() => duplicateWorker(trabajador)} className='w-150 bg-blue-600 color-white p-2 top-5 right-5 p-2 rounded-full hover:bg-gray-600 transition-colors duration-300'>
+          Duplicate
+        </button>
+      </div>
       </div>
     </div>
   );

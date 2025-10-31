@@ -34,7 +34,16 @@ export const Form: React.FC<FormProps> = ({ connectionUrl }: FormProps) => {
     }])
   }
 
+  const duplicateWorker = (pTrabajador: Trabajador) => {
+    setIndexTrabajadores(indexTrabajadores + 1);
+    setTrabajadores([...trabajadores, {
+      id: indexTrabajadores, nombre: pTrabajador.nombre, cargo: pTrabajador.cargo, concepto: pTrabajador.concepto, area: pTrabajador.area,
+      fechaInicio: pTrabajador.fechaInicio, fechaFinal: pTrabajador.fechaFinal, horaInicio: pTrabajador.horaInicio, horaFin: pTrabajador.horaFin
+    }])
+  }
+
   const deleteWorker = (_index: number) => {
+    setIndexTrabajadores(indexTrabajadores - 1);
     const newTrabajadores = [...trabajadores].filter((_, index) => _index !== index);
     setTrabajadores(newTrabajadores);
   }
@@ -65,27 +74,24 @@ export const Form: React.FC<FormProps> = ({ connectionUrl }: FormProps) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    console.log(connectionUrl);
 
     const formatTimeTo12Hour = (time: string) => {
       const [hour, minute] = time.split(':');
-      let formattedHour = parseInt(hour) % 12 || 12;
+      const formattedHour = parseInt(hour) % 12 || 12;
       const ampm = parseInt(hour) >= 12 ? 'PM' : 'AM';
       return `${formattedHour}:${minute} ${ampm}`;
     }
-
     // Crear el objeto de solicitud final incluyendo los trabajadores
     const solicitudFinal = {
       ...solicitud,
-      workers: trabajadores.map(trabajador => ({
+      workers: trabajadores.map((trabajador, p_index) => ({
         ...trabajador,
-        id: trabajador.id + 1,
+        id: p_index + 1,
         horaInicio: formatTimeTo12Hour(trabajador.horaInicio),
         horaFin: trabajador.horaFin ? formatTimeTo12Hour(trabajador.horaFin) : 'Pendiente'
       }))
     }
 
-    console.log(solicitudFinal)
 
     const response = await fetch(connectionUrl, {
       method: 'POST',
@@ -94,8 +100,6 @@ export const Form: React.FC<FormProps> = ({ connectionUrl }: FormProps) => {
       },
       body: JSON.stringify(solicitudFinal)
     })
-
-    console.log('Status de la respuesta...:', response)
 
     if (response.ok || response.statusText == 'Accepted' || response.status == 202) {
       console.log('Respuesta exitosa')
@@ -202,6 +206,7 @@ export const Form: React.FC<FormProps> = ({ connectionUrl }: FormProps) => {
                         index={index}
                         handleChange={handleChange}
                         deleteWorker={deleteWorker}
+                        duplicateWorker={duplicateWorker}
                       />
                     ))}
 

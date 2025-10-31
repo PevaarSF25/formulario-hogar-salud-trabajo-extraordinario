@@ -8,3 +8,16 @@
 
 }
 
+.color-white{
+  color: white
+}
+.d-flex{
+  display: flex;;
+}
+.align-items-start{
+  align-items: start;
+}
+.w-150{
+  width: 150px;
+}
+
