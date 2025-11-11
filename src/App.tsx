@@ -3,6 +3,7 @@ import Form from './Form'
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from "react-router-dom";
 import ConfigPage from "./ConfigPage";
 import NotFound from './components/NotFound';
+import CancelPage from './CancelPage';
 
 
 const ProtectedForm: React.FC = () => {
@@ -24,6 +25,8 @@ function App() {
       <Routes>
         {/* Ruta para la página de configuración del administrador */}
         <Route path="/config" element={<ConfigPage />} />
+
+        <Route path="/cancel" element={<CancelPage />} />
 
         <Route path="/" element={<ProtectedForm />} />
 

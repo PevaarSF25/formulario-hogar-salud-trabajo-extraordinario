@@ -71,6 +71,10 @@ export const Form: React.FC<FormProps> = ({ connectionUrl }: FormProps) => {
     window.location.reload()
   }
 
+  const cancelarSolicitud = () => {
+    window.location.href = '/cancel';
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
@@ -118,6 +122,12 @@ export const Form: React.FC<FormProps> = ({ connectionUrl }: FormProps) => {
             <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Formulario de Trabajo Extraordinario</h1>
               <button
+                    onClick={cancelarSolicitud}
+                    className="mr-50 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 transition-all duration-300 shadow-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                  >
+                    Cancelar solicitud
+                  </button>
+<button
                 onClick={() => setDarkMode(!darkMode)}
                 className="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 transition-colors duration-300"
                 aria-label="Toggle dark mode"
